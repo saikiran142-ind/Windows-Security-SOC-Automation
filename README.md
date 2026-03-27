@@ -54,6 +54,33 @@ Ensure that "User Account Management" auditing is enabled to record these events
 
 <img width="842" height="130" alt="image" src="https://github.com/user-attachments/assets/53f14da1-9c13-4dfb-8f94-82e3803170f4" />
 
+### 🛡️ Advanced Security Audits
+
+These advanced checks help identify more sophisticated attacks like privilege escalation and log tampering.
+
+*   **⚡ Privilege Escalation (Event ID 4732):**
+    Tracks when a user is added to the **Administrators** group. This is a common step for attackers to gain full control.
+    ```powershell
+    Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4732} -ErrorAction SilentlyContinue
+    ```
+
+*   **🧹 Log Tampering (Event ID 1102):**
+    Detects if the **Security Log** was cleared. Attackers do this to hide their tracks (Anti-Forensics).
+    ```powershell
+    Get-WinEvent -FilterHashtable @{LogName='Security'; Id=1102} -ErrorAction SilentlyContinue
+    ```
+
+*   **🌐 Live Network Connections (C2 Detection):**
+    Audits active TCP connections to identify potential **Command & Control (C2)** traffic or data exfiltration.
+    ```powershell
+    Get-NetTCPConnection -State Established | Select-Object LocalAddress, LocalPort, RemoteAddress, RemotePort, OwningProcess | Format-Table -AutoSize
+    ```
+
+
+> [!TIP]
+> **💡 Pro Tip:** If no events are found, it means no recent privilege escalation activities have occurred. You can test this by adding a user to the Local Administrators group to verify auditing is working correctly.
+
+
 
 - **EDR Deployment:** Documented experience in deploying **SentinelOne (S1)** agent.
 - **Real-time Alerts:** Integrated with **Telegram/WhatsApp API** for immediate mobile notifications.
@@ -72,7 +99,9 @@ In a real-world security scenario, if any critical events like **4720** or **462
 *   **🚫 Containment:** Immediately **Isolate** the compromised endpoint from the network using the **SentinelOne (S1)** agent to prevent lateral movement.
 *   **🕵️ Investigation:** Analyze the source IP, check for Privilege Escalation, and audit any unauthorized system changes made by the suspicious user.
 *   **🛠️ Remediation:** Remove the unauthorized user account, reset local administrator passwords, and clear any persistent backdoors to restore system integrity.
+*   
 
+💡 Pro Tip: If no events are found, it means no recent privilege escalation activities have occurred. You can test this by adding a user to the Local Administrators group
 
 ## 🎯 Goal
 My goal is to transition from IT Support to a professional SOC Analyst role by automating security workflows and protecting enterprise environments.
