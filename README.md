@@ -64,10 +64,15 @@ Ensure that "User Account Management" auditing is enabled to record these events
 - **Scripting:** Python, PowerShell
 - **Remote Access:** AnyDesk Security Monitoring
 
-## 📂 Project Structure
-- `monitor_logins.ps1`: Script to fetch failed/success login events.
-- `alert_system.py`: Python script to send alerts to mobile devices.
-- `network_scan.bat`: Basic network port auditing script.
+### 🛡️ Incident Response Workflow (IR Plan)
+
+In a real-world security scenario, if any critical events like **4720** or **4625** are detected, I follow this structured Incident Response (IR) plan:
+
+*   **🔍 Identification:** Use `Get-EventLog` or `Get-WinEvent` to identify unauthorized user creation (4720) or persistent brute-force attempts (4625).
+*   **🚫 Containment:** Immediately **Isolate** the compromised endpoint from the network using the **SentinelOne (S1)** agent to prevent lateral movement.
+*   **🕵️ Investigation:** Analyze the source IP, check for Privilege Escalation, and audit any unauthorized system changes made by the suspicious user.
+*   **🛠️ Remediation:** Remove the unauthorized user account, reset local administrator passwords, and clear any persistent backdoors to restore system integrity.
+
 
 ## 🎯 Goal
 My goal is to transition from IT Support to a professional SOC Analyst role by automating security workflows and protecting enterprise environments.
